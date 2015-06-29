@@ -40,6 +40,7 @@ After selecting an input file from the "Select Input and Output Files" option fr
 		
 		
 ------====== Results ======------
+
 The output format is as follows, with each value in a column:
 [Word 1][Word 2][Implication Result][Result Certainty][Implication Score][Implication Distance][Count of Conflicts]
 	

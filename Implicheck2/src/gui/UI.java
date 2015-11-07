@@ -8,6 +8,7 @@ package gui;
 import implication.Implication;
 import java.awt.Desktop;
 import static java.awt.Desktop.getDesktop;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
@@ -240,63 +241,7 @@ public class UI extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File("./assets"));
-				fileChooser.showOpenDialog(null);
-				File inputFile = fileChooser.getSelectedFile();
-				try {
-					FileInputStream inputStream = new FileInputStream(inputFile);
-					InputStreamReader inputReader = new InputStreamReader(inputStream, "utf-8");
-					BufferedReader in = new BufferedReader(inputReader);
-					
-					fileChooser.showSaveDialog(null);
-					File outputFile = fileChooser.getSelectedFile();
-					FileOutputStream outputStream = new FileOutputStream(outputFile);
-					OutputStreamWriter outputReader = new OutputStreamWriter(outputStream, "utf-8");
-					BufferedWriter out = new BufferedWriter(outputReader);
-					
-					String[] words;
-					int count = 1;
-					
-					String temp;
-					while ((temp = in.readLine()) != null){
-						System.out.println("Line: " + count++);
-						words = temp.split("\t"); 
-						if(words.length == 2){
-							Implication j = new Implication(words[0], words[1]);
-							out.append(temp);
-							out.append("\t");
-							out.append(j.getImplicationDistance());
-							out.append("\n");
-						} else if(words.length == 3){
-							Implication j = new Implication(words[1], words[2]);
-							out.append(temp);
-							out.append("\t");
-							out.append(j.getImplicationDistance());
-							out.append("\n");
-						} else if(words.length == 5){
-							Implication j = new Implication(words[1], words[4]);
-							out.append(temp);
-							out.append("\t");
-							out.append(j.getImplicationDistance());
-							out.append("\n");
-						} else {
-							Implication j = new Implication(words[1], words[2]);
-							out.append(temp);
-							out.append("\t");
-							out.append(j.getImplicationDistance());
-							out.append("\n");
-						}
-					}
-					in.close();
-					out.close();
-					System.out.println("Write to file " + outputFile.getName() + " complete");
-                                        textArea.append("\nWrite to file " + outputFile.getName() + " complete");
-				} catch (Exception e2) {
-					// TODO Auto-generated catch block
-					//e2.printStackTrace();
-                                    System.out.println("File error or cancellation");
-				}
+        (new FileExport()).start();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -363,4 +308,71 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JTextField word1;
     private javax.swing.JTextField word2;
     // End of variables declaration//GEN-END:variables
+}
+
+
+class FileExport extends Thread {
+    
+    @Override
+    public void run(){
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File("./assets"));
+        fileChooser.showOpenDialog(null);
+        File inputFile = fileChooser.getSelectedFile();
+        BufferedWriter out = null;
+        try {
+                FileInputStream inputStream = new FileInputStream(inputFile);
+                InputStreamReader inputReader = new InputStreamReader(inputStream, "utf-8");
+                BufferedReader in = new BufferedReader(inputReader);
+
+                fileChooser.showSaveDialog(null);
+                File outputFile = fileChooser.getSelectedFile();
+                FileOutputStream outputStream = new FileOutputStream(outputFile);
+                OutputStreamWriter outputReader = new OutputStreamWriter(outputStream, "utf-8");
+                out = new BufferedWriter(outputReader);
+
+                String[] words;
+                int count = 1;
+
+                String temp;
+                while ((temp = in.readLine()) != null && temp.compareTo("") != 0){
+                        System.out.println("Line: " + count++);
+                        words = temp.split("\t"); 
+                        if(words.length == 2){
+                                Implication j = new Implication(words[0], words[1]);
+                                out.append(temp);
+                                out.append("\t");
+                                out.append(j.getImplicationDistance());
+                                out.append("\n");
+                        } else if(words.length == 5){
+                                Implication j = new Implication(words[1], words[4]);
+                                out.append(temp);
+                                out.append("\t");
+                                out.append(j.getImplicationDistance());
+                                out.append("\n");
+                        } else if (words.length > 1){
+                                Implication j = new Implication(words[1], words[2]);
+                                out.append(temp);
+                                out.append("\t");
+                                out.append(j.getImplicationDistance());
+                                out.append("\n");
+                        }
+                }
+
+                out.flush();
+                in.close();
+                out.close();
+                System.out.println("Write to file " + outputFile.getName() + " complete");
+        } catch (HeadlessException | IOException e2) {
+                // TODO Auto-generated catch block
+                //e2.printStackTrace();
+            try {
+            if (out != null) out.flush();
+            } catch (IOException e) {
+                System.out.println("File flush error");
+            }
+            System.out.println("File error or cancellation");
+        }
+    }
+    
 }

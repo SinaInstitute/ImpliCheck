@@ -58,5 +58,11 @@ The possible values are:
 [Count of Conflicts] is the number of conflicting diacritics between the two words
 
 
+Contributors:
 
+Mustafa Jarrar, Birzeit University, Palestine.
+Fadi Zaraket, American University, Lebanon.
+Rami Asia, Birzeit University, Palestine.
+Mohammad Dwaikat, Birzeit University, Palestine.
+Hamzeh Amayreh, Birzeit University, Palestine.
 

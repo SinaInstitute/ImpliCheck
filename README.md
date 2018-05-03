@@ -60,9 +60,9 @@ The possible values are:
 
 Contributors:
 
-Mustafa Jarrar, Birzeit University, Palestine.
-Fadi Zaraket, American University, Lebanon.
-Rami Asia, Birzeit University, Palestine.
-Mohammad Dwaikat, Birzeit University, Palestine.
-Hamzeh Amayreh, Birzeit University, Palestine.
+1. Mustafa Jarrar, Birzeit University, Palestine.
+2. Fadi Zaraket, American University, Lebanon.
+3. Rami Asia, Birzeit University, Palestine.
+4. Mohammad Dwaikat, Birzeit University, Palestine.
+5. Hamzeh Amayreh, Birzeit University, Palestine.
 
